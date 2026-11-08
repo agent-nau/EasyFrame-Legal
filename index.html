@@ -1,23 +1,414 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>EasyFrame Legal</title>
-</head>
-<body style="background: #1e1e1e; color: white; font-family: sans-serif; text-align: center; padding: 50px;">
-    <h1>EasyFrame</h1>
-    
-    <!-- Links -->
-    <p><a href="privacy.md" style="color: #3b82f6;">Privacy Policy</a></p>
-    <p><a href="terms.md" style="color: #3b82f6;">Terms of Service</a></p>
-    
-    <hr style="border-color: #333; margin: 30px auto; max-width: 600px;">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EasyFrame</title>
+  <meta name="description" content="EasyFrame: watch the demo and read the Privacy Policy and Terms of Service.">
+  <meta name="theme-color" content="#14171b">
+  <style>
+    :root {
+      --bg: #14171b;
+      --surface: #1b1f24;
+      --line: #2a3037;
+      --text: #ecebe6;
+      --muted: #9aa1ab;
+      --accent: #5b9bff;
+      --radius: 14px;
+    }
 
-    <!-- Video Section -->
-    <h2>Demo Video</h2>
-    <video width="600" controls style="border-radius: 12px; border: 1px solid #333; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-        <source src="https://github.com/agent-nau/EasyFrame-Legal/demo.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    * { box-sizing: border-box; }
+
+    html { color-scheme: dark; scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Avenir Next", "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    a:focus-visible,
+    video:focus-visible,
+    summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+      border-radius: 6px;
+    }
+
+    .wrap {
+      width: min(100% - 32px, 880px);
+      margin-inline: auto;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-block: 24px;
+    }
+
+    .wordmark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+    }
+
+    .wordmark-mark {
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--accent);
+      border-radius: 5px;
+      position: relative;
+    }
+
+    .wordmark-mark::after {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    nav { display: flex; gap: 22px; }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    /* Hero */
+    .hero {
+      padding-block: clamp(40px, 9vw, 96px) clamp(28px, 5vw, 48px);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.8rem, 10vw, 5.5rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+    }
+
+    .lede {
+      margin: 20px 0 0;
+      max-width: 34ch;
+      font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+      color: var(--muted);
+    }
+
+    /* Demo: the video sits inside a "frame" with crop marks */
+    .demo { padding-block: 8px 24px; }
+
+    .frame {
+      position: relative;
+      padding: 14px;
+    }
+
+    .frame::before,
+    .frame::after,
+    .frame > i::before,
+    .frame > i::after {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border: 0 solid var(--accent);
+      pointer-events: none;
+    }
+
+    .frame::before { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
+    .frame::after { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
+    .frame > i::before { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
+    .frame > i::after { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
+
+    video {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 8px;
+    }
+
+    .caption {
+      margin: 14px 0 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .caption a { color: var(--accent); }
+
+    /* Legal */
+    .legal { padding-block: clamp(40px, 7vw, 72px) 24px; }
+
+    h2 {
+      margin: 0 0 20px;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .doc {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .doc:first-of-type { border-top: 1px solid var(--line); }
+
+    .doc summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 4px;
+      cursor: pointer;
+      list-style: none;
+      transition: background-color 0.15s ease, padding 0.15s ease;
+    }
+
+    .doc summary::-webkit-details-marker { display: none; }
+
+    .doc summary:hover {
+      background: var(--surface);
+      padding-inline: 16px;
+    }
+
+    .legal-title { display: block; font-weight: 600; font-size: 1.1rem; }
+    .legal-desc { display: block; color: var(--muted); font-size: 0.95rem; }
+
+    .chev {
+      flex: none;
+      width: 20px;
+      height: 20px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.2s ease;
+    }
+
+    .doc[open] .chev { transform: rotate(180deg); }
+
+    .doc-body {
+      padding: 8px 4px 32px;
+      max-width: 70ch;
+      color: #d6d5cf;
+    }
+
+    .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin: 1.8em 0 0.5em;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .doc-body h3 { font-size: 1.3rem; }
+    .doc-body h4 { font-size: 1.1rem; }
+    .doc-body h5, .doc-body h6 { font-size: 1rem; }
+    .doc-body > :first-child { margin-top: 0; }
+    .doc-body p, .doc-body ul, .doc-body ol { margin: 0 0 1em; }
+    .doc-body ul, .doc-body ol { padding-left: 1.4em; }
+    .doc-body li { margin-bottom: 0.35em; }
+    .doc-body a { color: var(--accent); }
+    .doc-body hr { border: 0; border-top: 1px solid var(--line); margin: 1.8em 0; }
+    .doc-body code {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.1em 0.35em;
+      font-size: 0.9em;
+    }
+
+    .doc-status { color: var(--muted); margin: 0; }
+
+    /* Footer */
+    footer {
+      margin-top: 48px;
+      padding-block: 28px 40px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+      nav { gap: 16px; }
+      .frame { padding: 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <header>
+      <a class="wordmark" href="#top" id="top">
+        <span class="wordmark-mark" aria-hidden="true"></span>
+        EasyFrame
+      </a>
+      <nav aria-label="Main">
+        <a href="#demo">Demo</a>
+        <a href="#legal">Legal</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>EasyFrame</h1>
+        <p class="lede">See it in action, then read how we handle your data and what the terms are.</p>
+      </section>
+
+      <section class="demo" id="demo" aria-labelledby="demo-title">
+        <h2 id="demo-title" style="position:absolute;left:-9999px;">Demo video</h2>
+        <div class="frame">
+          <i aria-hidden="true"></i>
+          <video controls playsinline preload="metadata">
+            <source src="demo.mp4" type="video/mp4">
+            Your browser can't play this video. <a href="demo.mp4">Download the demo</a> instead.
+          </video>
+        </div>
+        <p class="caption">Prefer to download it? <a href="demo.mp4" download>Get the demo video</a>.</p>
+      </section>
+
+      <section class="legal" id="legal" aria-labelledby="legal-title">
+        <h2 id="legal-title">Legal</h2>
+
+        <details class="doc" id="privacy" data-src="privacy.md">
+          <summary>
+            <span>
+              <span class="legal-title">Privacy Policy</span>
+              <span class="legal-desc">What we collect, why, and how it's protected.</span>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="doc-body"><p class="doc-status">Loading…</p></div>
+        </details>
+
+        <details class="doc" id="terms" data-src="terms.md">
+          <summary>
+            <span>
+              <span class="legal-title">Terms of Service</span>
+              <span class="legal-desc">The rules for using EasyFrame.</span>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="doc-body"><p class="doc-status">Loading…</p></div>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      © 2026 EasyFrame. All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    // Tiny Markdown renderer: headings, paragraphs, lists, bold, italic, code, links, rules.
+    function esc(s) {
+      return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function inline(s) {
+      s = esc(s);
+      s = s.replace(/`([^`]+)`/g, "<code>$1</code>");
+      s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+      s = s.replace(/(^|[\s(])\*([^*\s][^*]*)\*/g, "$1<em>$2</em>");
+      s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function (m, text, url) {
+        if (/^\s*(javascript|data|vbscript):/i.test(url)) return text;
+        var ext = /^https?:/i.test(url) ? ' target="_blank" rel="noopener noreferrer"' : "";
+        return '<a href="' + url + '"' + ext + ">" + text + "</a>";
+      });
+      return s;
+    }
+
+    function render(md) {
+      var lines = md.replace(/\r\n?/g, "\n").split("\n");
+      var out = [], para = [], list = null, m;
+
+      function flushPara() {
+        if (para.length) { out.push("<p>" + inline(para.join(" ")) + "</p>"); para = []; }
+      }
+      function flushList() {
+        if (list) { out.push("</" + list + ">"); list = null; }
+      }
+
+      lines.forEach(function (line) {
+        if (/^\s*$/.test(line)) { flushPara(); flushList(); return; }
+        if ((m = line.match(/^(#{1,6})\s+(.*?)\s*#*\s*$/))) {
+          flushPara(); flushList();
+          var level = Math.min(m[1].length + 2, 6); // keep headings below the section's h2
+          out.push("<h" + level + ">" + inline(m[2]) + "</h" + level + ">");
+          return;
+        }
+        if (/^\s*([-*_])\1{2,}\s*$/.test(line)) { flushPara(); flushList(); out.push("<hr>"); return; }
+        if ((m = line.match(/^\s*[-*+]\s+(.*)/))) {
+          flushPara();
+          if (list !== "ul") { flushList(); out.push("<ul>"); list = "ul"; }
+          out.push("<li>" + inline(m[1]) + "</li>");
+          return;
+        }
+        if ((m = line.match(/^\s*\d+[.)]\s+(.*)/))) {
+          flushPara();
+          if (list !== "ol") { flushList(); out.push("<ol>"); list = "ol"; }
+          out.push("<li>" + inline(m[1]) + "</li>");
+          return;
+        }
+        flushList();
+        para.push(line.trim());
+      });
+
+      flushPara(); flushList();
+      return out.join("\n");
+    }
+
+    function loadDoc(details) {
+      if (details.dataset.loaded) return;
+      details.dataset.loaded = "1";
+      var body = details.querySelector(".doc-body");
+      var src = details.dataset.src;
+
+      fetch(src)
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          return r.text();
+        })
+        .then(function (text) {
+          body.innerHTML = render(text);
+        })
+        .catch(function () {
+          delete details.dataset.loaded;
+          body.innerHTML = '<p class="doc-status">This document couldn\'t be loaded here. ' +
+            '<a href="' + src + '" style="color:var(--accent)">Open ' + src + '</a> directly.</p>';
+        });
+    }
+
+    document.querySelectorAll("details.doc").forEach(function (d) {
+      d.addEventListener("toggle", function () { if (d.open) loadDoc(d); });
+    });
+
+    // Deep links: index.html#privacy or #terms open that section.
+    function openFromHash() {
+      var d = document.querySelector("details.doc" + (location.hash || "#none"));
+      if (d) { d.open = true; d.scrollIntoView(); }
+    }
+    window.addEventListener("hashchange", openFromHash);
+    openFromHash();
+  </script>
 
 </body>
 </html>
