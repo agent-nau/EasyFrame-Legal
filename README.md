@@ -1,64 +1,87 @@
-<p align="center">
-  <img src="public/text.png" alt="EasyFrame Logo" height="150" width=“150" />
-</p>
+<div align="center">
+  <img src="public/text.png" alt="EasyFrame Logo" height="150" />
+  
+  <h1>EasyFrame</h1>
+  
+  <p>
+    <strong>Send Figma frames directly to Roblox Studio.</strong><br>
+    A free, open-source workflow that converts your Figma designs into native, editable Roblox GUI using a simple 6-character code.
+  </p>
 
-<h1 align="center">EasyFrame</h1>
+  <!-- Badges -->
+  <p>
+    <img src="https://img.shields.io/badge/Platform-Windows-blue?style=for-the-badge&logo=windows" alt="Platform" />
+    <img src="https://img.shields.io/badge/License-Open_Source-green?style=for-the-badge" alt="License" />
+    <img src="https://img.shields.io/badge/Privacy-100%25_Local-purple?style=for-the-badge" alt="Privacy" />
+  </p>
 
-<p align="center">
-  <strong>Send Figma frames directly to Roblox Studio.</strong><br>
-  A free, open-source workflow that converts your Figma designs into native, editable Roblox GUI using a simple 6-character code.
-</p>
-
-<p align="center">
-  <a href="https://www.easyframe.online/"><b>Visit the Website</b></a> • 
-  <a href="https://github.com/agent-nau/EasyFrame-Legal/releases"><b>Download Releases</b></a> • 
-  <a href="https://github.com/agent-nau/EasyFrame-Legal/issues"><b>Report an Issue</b></a>
-</p>
+  <!-- Quick Links -->
+  <h3>
+    <a href="https://www.easyframe.online/">🌐 Website</a> • 
+    <a href="https://github.com/agent-nau/EasyFrame-Legal/releases">⬇️ Download</a> • 
+    <a href="https://github.com/agent-nau/EasyFrame-Legal/issues">🐛 Report a Bug</a>
+  </h3>
+</div>
 
 ---
 
-## 🚀 What is EasyFrame?
+## 💡 Why EasyFrame?
 
-**EasyFrame** bridges the gap between UI design and game development. Instead of manually rebuilding your Figma designs piece by piece in Roblox Studio, EasyFrame translates your layers directly into native Roblox instances. 
+Manually rebuilding complex UI in Roblox Studio takes hours. EasyFrame acts as a direct bridge between your design tool and your game engine. 
 
-Everything runs **100% locally on your machine**. No servers, no tracking, and no design data ever leaves your computer.
+* ⚡ **Blazing Fast:** Skip the manual rebuilding process. Go from design to Studio in seconds.
+* 🛡️ **100% Private:** No servers, no cloud, no tracking. Your designs are processed entirely on your local machine.
+* 🧩 **Truly Native:** Generates real `Frames`, `TextLabels`, `UICorner`, and `UIListLayouts`—not just a static image.
+
+---
 
 ## ✨ Features
 
-*   **100% Local & Secure:** All design data is processed on your own PC. No analytics, no data collection.
-*   **Native Roblox UI:** Converts to actual `Frames`, `TextLabels`, `TextButtons`, `UICorner`, `UIStroke`, and layouts like `UIListLayout` and `UIGridLayout`.
-*   **Roblox OAuth:** Securely log in to upload your design images directly to your Roblox account.
-*   **Tag-Based Magic:** Name your Figma layers with specific tags for automatic behavior:
-    *   `_button` - Converts the frame to a `TextButton`.
-    *   `_list` - Adds a `UIListLayout`.
-    *   `_grid` - Adds a `UIGridLayout`.
-    *   `_textbox` - Converts to a `TextBox`.
-    *   `_fit` - Automatically sizes the frame to fit its contents.
-*   **Smooth Workflow:** No file exports. Just copy a 6-character code.
+*   **Roblox OAuth Integration:** Securely log in to upload your design images directly to your Roblox account.
+*   **Smart Layer Tags:** Name your Figma layers with specific tags to automatically apply Roblox behaviors.
+*   **Layout Support:** Automatically detects and applies `UIListLayout` and `UIGridLayout`.
+*   **Effect Conversion:** Converts Figma shadows, strokes, and blurs into `UIStroke` and `UIGradient`.
+
+### 🏷️ Supported Layer Tags
+Name your Figma layers with these tags to tell EasyFrame exactly what to do:
+
+| Tag | Roblox Conversion | Description |
+| :--- | :--- | :--- |
+| `_button` | `TextButton` | Turns the frame into a clickable button. |
+| `_list` | `UIListLayout` | Stacks children vertically or horizontally. |
+| `_grid` | `UIGridLayout` | Arranges children in a grid. |
+| `_textbox` | `TextBox` | Allows user text input. |
+| `_fit` | `AutomaticSize` | Automatically sizes the frame to fit its contents. |
 
 ---
 
 ## 🛠️ How It Works
 
-1. **Design in Figma:** Select a frame and run the EasyFrame Figma plugin. Click **"Generate Code."** (e.g., `3SYFM3`).
-2. **Paste in Studio:** Open the EasyFrame plugin in Roblox Studio and enter the 6-character code.
-3. **Done:** Your UI appears instantly as native, editable Roblox instances in your workspace.
+1.  **Design in Figma:** Install the EasyFrame Figma plugin, select a frame, and click **"Generate Code"** (e.g., `3SYFM3`).
+2.  **Paste in Studio:** Open the EasyFrame plugin inside Roblox Studio and paste your 6-character code.
+3.  **Done:** Your UI spawns instantly in your workspace as fully editable Roblox instances.
 
 ---
 
 ## 📥 Getting Started
 
-To use EasyFrame, you need to download three files from the [Releases](https://github.com/agent-nau/EasyFrame-Legal/releases) page:
+To use EasyFrame, download the latest files from the [**Releases Page**](https://github.com/agent-nau/EasyFrame-Legal/releases):
 
-1. **EasyFrame for Windows (`.exe`):** The core desktop app. Run this first and leave it open in the background.
-2. **Figma Plugin (`.zip`):** Install this in Figma to generate your 6-character codes. *(Note: Does not need to be published to the Figma Community).*
-3. **Roblox Studio Plugin (`.rbxm`):** Drop this into your Roblox Studio plugins folder to import the designs.
+1. **EasyFrame for Windows (`.exe`)** 
+   *   This is the core engine. Run this first and leave it running in the background.
+2. **Figma Plugin (`.zip`)**
+   *   Import this into your Figma desktop app to generate transfer codes.
+3. **Roblox Studio Plugin (`.rbxm`)**
+   *   Drop this file into your Roblox Studio plugins folder to receive your designs.
 
 ---
 
-## 🎥 Demo
+## 🤝 Contributing & Support
 
-Check out the video on the [website](https://www.easyframe.online/) to see the magic happen in real-time.
+EasyFrame is a community-driven project. 
+*   Found a bug? [Open an issue](https://github.com/agent-nau/EasyFrame-Legal/issues).
+*   Want to request a feature? [Start a discussion](https://github.com/agent-nau/EasyFrame-Legal/issues).
+*   Want to contribute code? Fork the repo and submit a Pull Request!
 
 ---
 
