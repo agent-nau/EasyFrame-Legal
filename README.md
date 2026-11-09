@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/text.png" alt="EasyFrame Logo" width=“150" />
+  <img src="public/text.png" alt="EasyFrame Logo" height="150" width=“150" />
 </p>
 
 <h1 align="center">EasyFrame</h1>
