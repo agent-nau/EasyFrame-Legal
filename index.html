@@ -213,6 +213,7 @@ footer .fl{display:flex;gap:20px}
 <section id="demo" style="padding-top:24px">
   <div class="wrap">
     <figure class="video-card">
+      <!-- NOTE: Change demo.mp4 to robloxauth.mp4 if that is the file name in your GitHub repo -->
       <video controls preload="metadata" playsinline src="demo.mp4">
         Your browser can’t play this video. <a href="demo.mp4">Download the demo</a>.
       </video>
@@ -351,40 +352,32 @@ footer .fl{display:flex;gap:20px}
 <a class="totop" href="#" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 15 7-7 7 7"/></svg></a>
 <script>
 (function(){
-  var OFFSET=84, DURATION=700, raf;
-  function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
-  function scrollToY(y){
-    cancelAnimationFrame(raf);
-    if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      window.scrollTo(0,y);
-      return;
-    }
-    var start=window.pageYOffset, dist=y-start, t0=null;
-    if(Math.abs(dist)<2)return;
-    function step(ts){
-      if(t0===null)t0=ts;
-      var p=Math.min((ts-t0)/DURATION,1);
-      window.scrollTo(0,start+dist*ease(p));
-      if(p<1)raf=requestAnimationFrame(step);
-    }
-    raf=requestAnimationFrame(step);
-  }
-  ['wheel','touchstart','keydown'].forEach(function(e){
-    window.addEventListener(e,function(){cancelAnimationFrame(raf)},{passive:true});
-  });
   document.addEventListener('click',function(e){
     var a=e.target.closest('a[href^="#"]');
     if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey)return;
-    var hash=a.getAttribute('href'), target=null, y=0;
-    if(hash!=='#'){
+    
+    var hash=a.getAttribute('href'), target=null;
+    if(hash && hash !== '#'){
       target=document.getElementById(decodeURIComponent(hash.slice(1)));
       if(!target)return;
-      y=target.getBoundingClientRect().top+window.pageYOffset-OFFSET;
     }
+    
     e.preventDefault();
-    scrollToY(Math.max(0,y));
-    try{history.pushState(null,'',hash==='#'?location.pathname+location.search:hash)}catch(_){}
-    if(target){target.setAttribute('tabindex','-1');target.focus({preventScroll:true})}
+    
+    if(target){
+      // Use native smooth scrolling
+      target.scrollIntoView({behavior: 'smooth', block: 'start'});
+      target.setAttribute('tabindex','-1');
+      target.focus({preventScroll:true});
+    } else {
+      // Scroll to top if href="#"
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    // Remove hashtag from URL
+    try{
+      history.replaceState(null, '', location.pathname + location.search);
+    }catch(_){}
   });
 })();
 </script>
