@@ -1,414 +1,471 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>EasyFrame</title>
-  <meta name="description" content="EasyFrame: watch the demo and read the Privacy Policy and Terms of Service.">
-  <meta name="theme-color" content="#14171b">
-  <style>
-    :root {
-      --bg: #14171b;
-      --surface: #1b1f24;
-      --line: #2a3037;
-      --text: #ecebe6;
-      --muted: #9aa1ab;
-      --accent: #5b9bff;
-      --radius: 14px;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EasyFrame – Send Figma frames directly to Roblox Studio</title>
+<meta name="description" content="EasyFrame is a free, open-source Windows app that converts Figma frames into native Roblox GUI. Everything runs locally on your machine.">
+<link rel="icon" type="image/png" href="public/text.png">
+<link rel="apple-touch-icon" href="public/text.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1117; --surface:#151a23; --surface-2:#1b212c; --border:#262d3a; --border-soft:#1e2430;
+  --text:#e8ebf2; --muted:#98a1b3; --accent:#8b7cff; --accent-2:#4f8cff;
+  --grad:linear-gradient(135deg,#8b7cff 0%,#424d60 100%);
+  --radius:14px;
+  --sans:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--accent-2);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+code,.mono{font-family:var(--mono)}
+code{background:var(--surface-2);border:1px solid var(--border);padding:.1em .45em;border-radius:6px;font-size:.88em}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+section{padding:88px 0}
+h1,h2,h3{line-height:1.15;margin:0;letter-spacing:-.02em}
+h2{font-size:clamp(1.7rem,3.2vw,2.3rem);font-weight:650;margin-bottom:12px}
+.lead{color:var(--muted);max-width:60ch;margin:0 0 40px}
 
-    * { box-sizing: border-box; }
+/* nav */
+nav{position:sticky;top:0;z-index:10;background:rgba(14,17,23,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-soft)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;color:var(--text)}
+.brand:hover{text-decoration:none}
+.logo{width:28px;height:28px;border-radius:8px;object-fit:contain;display:block}
+.links{display:flex;gap:22px;font-size:.95rem}
+.links a{color:var(--muted)}
+.links a:hover{color:var(--text);text-decoration:none}
 
-    html { color-scheme: dark; scroll-behavior: smooth; }
+/* hero */
+.hero{padding:96px 0 72px;text-align:center}
+.badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);padding:6px 14px;border-radius:999px;font-size:.88rem}
+.badge b{width:7px;height:7px;border-radius:50%;background:#3ddc97;display:block}
+h1{font-size:clamp(2.4rem,6.2vw,4.2rem);font-weight:700;letter-spacing:-.035em;max-width:16ch;margin:24px auto 20px}
+.hero p{color:var(--muted);font-size:1.15rem;max-width:52ch;margin:0 auto 34px}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:12px;font-weight:600;font-size:1rem;border:1px solid var(--border);color:var(--text);background:var(--surface);transition:transform .15s,border-color .15s,box-shadow .15s}
+.btn:hover{text-decoration:none;border-color:#3a4356;transform:translateY(-1px)}
+.btn.primary{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 8px 28px -8px rgba(110,110,255,.55)}
+.btn.primary:hover{box-shadow:0 12px 32px -8px rgba(110,110,255,.7)}
+.reveal{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+.reveal.d1{animation-delay:.08s}.reveal.d2{animation-delay:.16s}.reveal.d3{animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Avenir Next", "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, sans-serif;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+/* download menu + github icon */
+.gh{width:18px;height:18px;flex:none}
+.links a.keep{display:inline-flex;align-items:center;gap:7px}
+.links .gh{width:16px;height:16px}
+.cta{position:relative;z-index:5}
+.dl{position:relative}
 
-    a { color: inherit; }
+/* Dropdown chevron + open/close animation */
+.chev{
+  width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;transform-origin:center;
+  transition:transform .28s cubic-bezier(.4,0,.2,1);
+}
+.dl > button[aria-expanded="true"] .chev{transform:rotate(180deg)}
 
-    a:focus-visible,
-    video:focus-visible,
-    summary:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 4px;
-      border-radius: 6px;
-    }
+.menu{
+  position:absolute;top:calc(100% + 10px);left:50%;
+  width:340px;max-width:calc(100vw - 32px);padding:8px;text-align:left;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:0 24px 48px -16px rgba(0,0,0,.8);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translate(-50%,-9px) scale(.97);
+  transform-origin:50% 0;
+  transition:opacity .22s ease,transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s linear .28s;
+  will-change:opacity,transform;
+}
+.menu.open{
+  opacity:1;visibility:visible;pointer-events:auto;
+  transform:translate(-50%,0) scale(1);
+  transition:opacity .22s ease,transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s;
+}
+.menu a{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border-radius:10px;color:var(--text)}
+.menu a:hover,.menu a:focus-visible{background:var(--surface-2);text-decoration:none}
+.menu .mt{font-weight:600;font-size:.98rem}
+.menu .ms{color:var(--muted);font-size:.86rem;line-height:1.4}
 
-    .wrap {
-      width: min(100% - 32px, 880px);
-      margin-inline: auto;
-    }
+/* menu item animation */
+.links{align-items:center}
+.menu.open a{animation:itemIn .22s ease-out both}
+.menu.open a:nth-child(2){animation-delay:.05s}
+.menu.open a:nth-child(3){animation-delay:.1s}
+@keyframes itemIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-    /* Header */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-block: 24px;
-    }
+/* Back-to-top fade */
+.totop{
+  position:fixed;right:max(20px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));z-index:20;
+  width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff;background:var(--grad);
+  box-shadow:0 12px 28px -8px rgba(110,110,255,.6);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(12px) scale(.94);
+  transition:opacity .28s ease,transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s linear .28s,box-shadow .2s;
+  will-change:opacity,transform;
+}
+.totop.show{
+  opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1);
+  transition:opacity .28s ease,transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s,box-shadow .2s;
+}
+.totop:hover{text-decoration:none;box-shadow:0 16px 32px -8px rgba(110,110,255,.8)}
+.totop svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.totop:hover svg{transform:translateY(-3px)}
 
-    .wordmark {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: -0.01em;
-      text-decoration: none;
-    }
+/* demo */
+.video-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:10px;box-shadow:0 30px 60px -30px rgba(0,0,0,.8)}
+video{display:block;width:100%;height:auto;border-radius:10px;background:#000;aspect-ratio:16/9}
+figcaption{text-align:center;color:var(--muted);font-size:.95rem;margin-top:16px}
+figure{margin:0}
 
-    .wordmark-mark {
-      width: 22px;
-      height: 22px;
-      border: 2px solid var(--accent);
-      border-radius: 5px;
-      position: relative;
-    }
+/* features */
+.grid{display:grid;gap:16px;grid-template-columns:repeat(2,1fr)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+.card h3{font-size:1.15rem;font-weight:600;margin:16px 0 8px}
+.card p{margin:0;color:var(--muted);font-size:.98rem}
+.ico{width:42px;height:42px;border-radius:11px;background:var(--surface-2);border:1px solid var(--border);display:grid;place-items:center;color:var(--accent)}
+.ico svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
-    .wordmark-mark::after {
-      content: "";
-      position: absolute;
-      inset: 4px;
-      background: var(--accent);
-      border-radius: 2px;
-    }
+/* steps */
+.steps{display:grid;gap:16px;grid-template-columns:repeat(3,1fr);counter-reset:s}
+.step{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--grad);color:#fff;font-weight:700;font-size:.95rem;margin-bottom:16px}
+.step h3{font-size:1.1rem;font-weight:600;margin-bottom:8px}
+.step p{margin:0;color:var(--muted);font-size:.98rem}
+.codebox{margin-top:20px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;font-family:var(--mono);color:var(--muted);font-size:.92rem}
+.code{font-family:var(--mono);font-weight:500;font-size:1.5rem;letter-spacing:.28em;padding:10px 18px 10px 24px;border-radius:12px;background:var(--surface);border:1px solid var(--border);color:var(--text);box-shadow:inset 0 0 0 1px rgba(139,124,255,.25)}
 
-    nav { display: flex; gap: 22px; }
+/* legal */
+.legal-cards{display:grid;gap:16px;grid-template-columns:repeat(2,1fr)}
+.legal-cards .card .more{display:inline-block;margin-top:16px;font-weight:600;font-size:.95rem}
+.doc{max-width:720px;margin:0 auto;padding:56px 0;border-top:1px solid var(--border-soft)}
+.doc h2{font-size:1.7rem}
+.doc h3{font-size:1.05rem;font-weight:600;margin:28px 0 6px}
+.doc p,.doc li{color:#b8c0cf;font-size:.98rem}
+.doc ul{padding-left:1.2em;margin:8px 0}
+.updated{color:var(--muted);font-size:.9rem;margin:0 0 8px}
 
-    nav a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.95rem;
-    }
+footer{border-top:1px solid var(--border-soft);padding:36px 0;color:var(--muted);font-size:.92rem}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--muted)}footer a:hover{color:var(--text)}
+footer .fl{display:flex;gap:20px}
 
-    nav a:hover { color: var(--text); }
-
-    /* Hero */
-    .hero {
-      padding-block: clamp(40px, 9vw, 96px) clamp(28px, 5vw, 48px);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(2.8rem, 10vw, 5.5rem);
-      line-height: 1;
-      letter-spacing: -0.04em;
-      font-weight: 800;
-    }
-
-    .lede {
-      margin: 20px 0 0;
-      max-width: 34ch;
-      font-size: clamp(1.05rem, 2.4vw, 1.25rem);
-      color: var(--muted);
-    }
-
-    /* Demo: the video sits inside a "frame" with crop marks */
-    .demo { padding-block: 8px 24px; }
-
-    .frame {
-      position: relative;
-      padding: 14px;
-    }
-
-    .frame::before,
-    .frame::after,
-    .frame > i::before,
-    .frame > i::after {
-      content: "";
-      position: absolute;
-      width: 22px;
-      height: 22px;
-      border: 0 solid var(--accent);
-      pointer-events: none;
-    }
-
-    .frame::before { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
-    .frame::after { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
-    .frame > i::before { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
-    .frame > i::after { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
-
-    video {
-      display: block;
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
-      background: #000;
-      border-radius: 8px;
-    }
-
-    .caption {
-      margin: 14px 0 0;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .caption a { color: var(--accent); }
-
-    /* Legal */
-    .legal { padding-block: clamp(40px, 7vw, 72px) 24px; }
-
-    h2 {
-      margin: 0 0 20px;
-      font-size: 1.5rem;
-      letter-spacing: -0.02em;
-    }
-
-    .doc {
-      border-bottom: 1px solid var(--line);
-    }
-
-    .doc:first-of-type { border-top: 1px solid var(--line); }
-
-    .doc summary {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 20px 4px;
-      cursor: pointer;
-      list-style: none;
-      transition: background-color 0.15s ease, padding 0.15s ease;
-    }
-
-    .doc summary::-webkit-details-marker { display: none; }
-
-    .doc summary:hover {
-      background: var(--surface);
-      padding-inline: 16px;
-    }
-
-    .legal-title { display: block; font-weight: 600; font-size: 1.1rem; }
-    .legal-desc { display: block; color: var(--muted); font-size: 0.95rem; }
-
-    .chev {
-      flex: none;
-      width: 20px;
-      height: 20px;
-      stroke: var(--accent);
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: transform 0.2s ease;
-    }
-
-    .doc[open] .chev { transform: rotate(180deg); }
-
-    .doc-body {
-      padding: 8px 4px 32px;
-      max-width: 70ch;
-      color: #d6d5cf;
-    }
-
-    .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
-      margin: 1.8em 0 0.5em;
-      line-height: 1.3;
-      letter-spacing: -0.01em;
-      color: var(--text);
-    }
-
-    .doc-body h3 { font-size: 1.3rem; }
-    .doc-body h4 { font-size: 1.1rem; }
-    .doc-body h5, .doc-body h6 { font-size: 1rem; }
-    .doc-body > :first-child { margin-top: 0; }
-    .doc-body p, .doc-body ul, .doc-body ol { margin: 0 0 1em; }
-    .doc-body ul, .doc-body ol { padding-left: 1.4em; }
-    .doc-body li { margin-bottom: 0.35em; }
-    .doc-body a { color: var(--accent); }
-    .doc-body hr { border: 0; border-top: 1px solid var(--line); margin: 1.8em 0; }
-    .doc-body code {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      padding: 0.1em 0.35em;
-      font-size: 0.9em;
-    }
-
-    .doc-status { color: var(--muted); margin: 0; }
-
-    /* Footer */
-    footer {
-      margin-top: 48px;
-      padding-block: 28px 40px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 480px) {
-      nav { gap: 16px; }
-      .frame { padding: 10px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      * { transition: none !important; }
-    }
-  </style>
+@media (max-width:760px){
+  section{padding:64px 0}
+  .hero{padding:64px 0 48px}
+  .grid,.steps,.legal-cards{grid-template-columns:1fr}
+  .links a:not(.keep){display:none}
+  .links{gap:14px}
+  .card,.step{padding:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  .reveal{animation:none}
+  .btn,.chev{transition:none}
+  .menu.open a{animation:none}
+  .menu,.totop,.totop svg{transition:none}
+}
+</style>
 </head>
 <body>
 
+<nav>
   <div class="wrap">
-    <header>
-      <a class="wordmark" href="#top" id="top">
-        <span class="wordmark-mark" aria-hidden="true"></span>
-        EasyFrame
-      </a>
-      <nav aria-label="Main">
-        <a href="#demo">Demo</a>
-        <a href="#legal">Legal</a>
-      </nav>
-    </header>
-
-    <main>
-      <section class="hero">
-        <h1>EasyFrame</h1>
-        <p class="lede">See it in action, then read how we handle your data and what the terms are.</p>
-      </section>
-
-      <section class="demo" id="demo" aria-labelledby="demo-title">
-        <h2 id="demo-title" style="position:absolute;left:-9999px;">Demo video</h2>
-        <div class="frame">
-          <i aria-hidden="true"></i>
-          <video controls playsinline preload="metadata">
-            <source src="demo.mp4" type="video/mp4">
-            Your browser can't play this video. <a href="demo.mp4">Download the demo</a> instead.
-          </video>
-        </div>
-        <p class="caption">Prefer to download it? <a href="demo.mp4" download>Get the demo video</a>.</p>
-      </section>
-
-      <section class="legal" id="legal" aria-labelledby="legal-title">
-        <h2 id="legal-title">Legal</h2>
-
-        <details class="doc" id="privacy" data-src="privacy.md">
-          <summary>
-            <span>
-              <span class="legal-title">Privacy Policy</span>
-              <span class="legal-desc">What we collect, why, and how it's protected.</span>
-            </span>
-            <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-          </summary>
-          <div class="doc-body"><p class="doc-status">Loading…</p></div>
-        </details>
-
-        <details class="doc" id="terms" data-src="terms.md">
-          <summary>
-            <span>
-              <span class="legal-title">Terms of Service</span>
-              <span class="legal-desc">The rules for using EasyFrame.</span>
-            </span>
-            <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-          </summary>
-          <div class="doc-body"><p class="doc-status">Loading…</p></div>
-        </details>
-      </section>
-    </main>
-
-    <footer>
-      © 2026 EasyFrame. All rights reserved.
-    </footer>
+    <a class="brand" href="#"><img class="logo" src="public/text.png" alt="" width="28" height="28">EasyFrame</a>
+    <div class="links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#terms">Terms</a>
+      <a class="keep" href="https://github.com/agent-nau/EasyFrame-Legal"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+    </div>
   </div>
+</nav>
 
-  <script>
-    // Tiny Markdown renderer: headings, paragraphs, lists, bold, italic, code, links, rules.
-    function esc(s) {
-      return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="badge reveal"><b></b>Windows 10/11 • Free &amp; Open Source</span>
+    <h1 class="reveal d1">Send Figma frames directly to Roblox Studio.</h1>
+    <p class="reveal d2">Pick a frame, generate a code, paste it into Studio. Your design arrives as native, editable Roblox GUI.</p>
+    <div class="cta reveal d3">
+      <div class="dl">
+        <button class="btn primary" id="download-menu-button" type="button" aria-haspopup="true" aria-controls="download-menu" aria-expanded="false">Download EasyFrame<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="menu" id="download-menu">
+          <a href="https://github.com/agent-nau/EasyFrame-Legal/releases/latest/download/EasyFrame.exe"><span class="mt">EasyFrame for Windows</span><span class="ms">Desktop app (.exe) – run this first</span></a>
+          <a href="https://github.com/agent-nau/EasyFrame-Legal/releases/latest/download/EasyFrame-Figma-Plugin.zip"><span class="mt">Figma plugin</span><span class="ms">Generates the 6-character code</span></a>
+          <a href="https://github.com/agent-nau/EasyFrame-Legal/releases/latest/download/EasyFrame-Roblox-Plugin.rbxm"><span class="mt">Roblox Studio plugin</span><span class="ms">Paste the code here to import your design</span></a>
+        </div>
+      </div>
+      <a class="btn" href="https://github.com/agent-nau/EasyFrame-Legal"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>View on GitHub</a>
+    </div>
+    <div class="codebox reveal d3" aria-label="Example 6-character code">
+      <span>Figma plugin shows</span><span class="code" aria-hidden="true">3SYFM3</span><span>Studio plugin accepts</span>
+    </div>
+  </div>
+</header>
+
+<section id="demo" style="padding-top:24px">
+  <div class="wrap">
+    <figure class="video-card">
+      <video controls preload="metadata" playsinline src="demo.mp4">
+        Your browser can’t play this video. <a href="demo.mp4">Download the demo</a>.
+      </video>
+      <figcaption>See how it works — select a frame, generate a code, paste it into Studio.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <h2>Built for Roblox UI workflows</h2>
+    <p class="lead">Design in Figma the way you already do. EasyFrame handles the translation.</p>
+    <div class="grid">
+      <article class="card">
+        <span class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+        <h3>Local &amp; Secure</h3>
+        <p>All design data stays on your machine. No servers, no tracking.</p>
+      </article>
+      <article class="card">
+        <span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+        <h3>Roblox OAuth</h3>
+        <p>Log in with Roblox to upload images directly to your account.</p>
+      </article>
+      <article class="card">
+        <span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 21V9"/></svg></span>
+        <h3>Native Roblox UI</h3>
+        <p>Converts to Frames, TextLabels, Buttons, UICorner, UIStroke, and layouts like UIListLayout and UIGridLayout.</p>
+      </article>
+      <article class="card">
+        <span class="ico"><svg viewBox="0 0 24 24"><path d="M20 12 12 20 4 12V4h8z"/><circle cx="8.5" cy="8.5" r="1"/></svg></span>
+        <h3>Tags</h3>
+        <p>Name layers <code>_button</code>, <code>_list</code>, <code>_grid</code>, <code>_textbox</code>, or <code>_fit</code> for automatic behavior.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="how" style="padding-top:24px">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <p class="lead">Three steps from Figma frame to Studio GUI.</p>
+    <div class="steps">
+      <div class="step"><h3>Design in Figma</h3><p>Select a frame and run the EasyFrame plugin. Click “Generate Code.”</p></div>
+      <div class="step"><h3>Paste in Studio</h3><p>Open the EasyFrame plugin in Roblox Studio and enter the 6-character code.</p></div>
+      <div class="step"><h3>Done</h3><p>Your UI appears instantly as native Roblox instances. Fully editable.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="legal" style="padding-top:24px;padding-bottom:24px">
+  <div class="wrap">
+    <h2>Privacy &amp; Terms</h2>
+    <p class="lead">Plain-language policies, written in full below.</p>
+    <div class="legal-cards">
+      <article class="card">
+        <h3 style="margin-top:0">Privacy Policy</h3>
+        <p>EasyFrame processes all data locally on your machine. No personal data is collected or transmitted to external servers.</p>
+        <a class="more" href="#privacy">Read the full Privacy Policy</a>
+      </article>
+      <article class="card">
+        <h3 style="margin-top:0">Terms of Service</h3>
+        <p>EasyFrame is free, open-source software provided as is. Use it for your own Roblox projects and follow the Roblox and Figma rules.</p>
+        <a class="more" href="#terms">Read the full Terms of Service</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <article class="doc" id="privacy">
+    <h2>Privacy Policy</h2>
+    <p class="updated">Last updated: November 10, 2026</p>
+    <p>EasyFrame is a local desktop application for Windows that connects Figma and Roblox Studio. This policy explains what happens to your data when you use it.</p>
+
+    <h3>Data we collect</h3>
+    <p>None. EasyFrame does not collect, store, or transmit personal data to the developer or to any external server we operate. We run no analytics, advertising, or tracking.</p>
+
+    <h3>How your designs are processed</h3>
+    <p>When you generate a code in the Figma plugin, your selected frame is sent to the EasyFrame app running on your own computer. The Roblox Studio plugin then retrieves the converted design from that same local app. Design data is not sent anywhere else.</p>
+
+    <h3>Roblox login and image uploads</h3>
+    <p>If you choose to log in with Roblox, authentication happens on Roblox’s own website through OAuth. EasyFrame never sees your password. The access token Roblox issues is stored locally on your device and is used only to upload images from your designs to your Roblox account. Uploaded images are sent to Roblox and are subject to the <a href="https://en.help.roblox.com/hc/en-us/articles/115004630823">Roblox Privacy Policy</a>. You can log out at any time and delete the locally stored token.</p>
+
+    <h3>Third-party services</h3>
+    <p>Figma and Roblox Studio are separate products with their own privacy policies. Downloading EasyFrame from GitHub is subject to GitHub’s policies. This website does not use cookies or analytics.</p>
+
+    <h3>Children</h3>
+    <p>EasyFrame collects no personal information from anyone, including children. Use of Roblox accounts is governed by Roblox’s own age requirements.</p>
+
+    <h3>Changes</h3>
+    <p>If this policy changes, the updated version will be posted on this page with a new date.</p>
+
+    <h3>Contact</h3>
+    <p>Questions? Open an issue at <a href="https://github.com/agent-nau/EasyFrame-Legal/issues">github.com/agent-nau/EasyFrame-Legal/issues</a>.</p>
+  </article>
+
+  <article class="doc" id="terms">
+    <h2>Terms of Service</h2>
+    <p class="updated">Last updated: November 10, 2026</p>
+    <p>By downloading or using EasyFrame, you agree to these terms.</p>
+
+    <h3>License and use</h3>
+    <p>EasyFrame is free, open-source software. You may use, copy, and modify it under the license published in the project’s GitHub repository. Use it only for lawful purposes and in line with the Roblox Terms of Use and Figma’s Terms of Service.</p>
+
+    <h3>Your content</h3>
+    <p>You keep all rights to the designs you create and convert. You are responsible for having the right to use any images, fonts, and other assets in your designs, including anything you upload to Roblox.</p>
+
+    <h3>No warranty</h3>
+    <p>EasyFrame is provided “as is” and “as available,” without warranties of any kind. Converted output may need manual adjustment, and we do not guarantee that it will be error-free or suit a particular purpose.</p>
+
+    <h3>Limitation of liability</h3>
+    <p>To the extent permitted by law, the developers are not liable for any damages arising from your use of EasyFrame, including lost data, lost work, or account actions taken by third-party platforms.</p>
+
+    <h3>Not affiliated</h3>
+    <p>EasyFrame is an independent project. It is not affiliated with, endorsed by, or sponsored by Roblox Corporation or Figma, Inc. Roblox and Figma are trademarks of their respective owners.</p>
+
+    <h3>Changes and termination</h3>
+    <p>We may update these terms or discontinue the project at any time. Updated terms will be posted on this page. If you disagree with them, stop using EasyFrame.</p>
+
+    <h3>Contact</h3>
+    <p>Open an issue at <a href="https://github.com/agent-nau/EasyFrame-Legal/issues">github.com/agent-nau/EasyFrame-Legal/issues</a>.</p>
+  </article>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 EasyFrame. Free &amp; open source.</span>
+    <div class="fl">
+      <a href="#privacy">Privacy Policy</a>
+      <a href="#terms">Terms of Service</a>
+      <a href="https://github.com/agent-nau/EasyFrame-Legal">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<a class="totop" href="#" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 15 7-7 7 7"/></svg></a>
+<script>
+(function(){
+  var OFFSET=84, DURATION=700, raf;
+  function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+  function scrollToY(y){
+    cancelAnimationFrame(raf);
+    if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      window.scrollTo(0,y);
+      return;
     }
-
-    function inline(s) {
-      s = esc(s);
-      s = s.replace(/`([^`]+)`/g, "<code>$1</code>");
-      s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-      s = s.replace(/(^|[\s(])\*([^*\s][^*]*)\*/g, "$1<em>$2</em>");
-      s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function (m, text, url) {
-        if (/^\s*(javascript|data|vbscript):/i.test(url)) return text;
-        var ext = /^https?:/i.test(url) ? ' target="_blank" rel="noopener noreferrer"' : "";
-        return '<a href="' + url + '"' + ext + ">" + text + "</a>";
-      });
-      return s;
+    var start=window.pageYOffset, dist=y-start, t0=null;
+    if(Math.abs(dist)<2)return;
+    function step(ts){
+      if(t0===null)t0=ts;
+      var p=Math.min((ts-t0)/DURATION,1);
+      window.scrollTo(0,start+dist*ease(p));
+      if(p<1)raf=requestAnimationFrame(step);
     }
-
-    function render(md) {
-      var lines = md.replace(/\r\n?/g, "\n").split("\n");
-      var out = [], para = [], list = null, m;
-
-      function flushPara() {
-        if (para.length) { out.push("<p>" + inline(para.join(" ")) + "</p>"); para = []; }
-      }
-      function flushList() {
-        if (list) { out.push("</" + list + ">"); list = null; }
-      }
-
-      lines.forEach(function (line) {
-        if (/^\s*$/.test(line)) { flushPara(); flushList(); return; }
-        if ((m = line.match(/^(#{1,6})\s+(.*?)\s*#*\s*$/))) {
-          flushPara(); flushList();
-          var level = Math.min(m[1].length + 2, 6); // keep headings below the section's h2
-          out.push("<h" + level + ">" + inline(m[2]) + "</h" + level + ">");
-          return;
-        }
-        if (/^\s*([-*_])\1{2,}\s*$/.test(line)) { flushPara(); flushList(); out.push("<hr>"); return; }
-        if ((m = line.match(/^\s*[-*+]\s+(.*)/))) {
-          flushPara();
-          if (list !== "ul") { flushList(); out.push("<ul>"); list = "ul"; }
-          out.push("<li>" + inline(m[1]) + "</li>");
-          return;
-        }
-        if ((m = line.match(/^\s*\d+[.)]\s+(.*)/))) {
-          flushPara();
-          if (list !== "ol") { flushList(); out.push("<ol>"); list = "ol"; }
-          out.push("<li>" + inline(m[1]) + "</li>");
-          return;
-        }
-        flushList();
-        para.push(line.trim());
-      });
-
-      flushPara(); flushList();
-      return out.join("\n");
+    raf=requestAnimationFrame(step);
+  }
+  ['wheel','touchstart','keydown'].forEach(function(e){
+    window.addEventListener(e,function(){cancelAnimationFrame(raf)},{passive:true});
+  });
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href^="#"]');
+    if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey)return;
+    var hash=a.getAttribute('href'), target=null, y=0;
+    if(hash!=='#'){
+      target=document.getElementById(decodeURIComponent(hash.slice(1)));
+      if(!target)return;
+      y=target.getBoundingClientRect().top+window.pageYOffset-OFFSET;
     }
+    e.preventDefault();
+    scrollToY(Math.max(0,y));
+    try{history.pushState(null,'',hash==='#'?location.pathname+location.search:hash)}catch(_){}
+    if(target){target.setAttribute('tabindex','-1');target.focus({preventScroll:true})}
+  });
+})();
+</script>
+<script>
+(function(){
+  var dropdowns=[].slice.call(document.querySelectorAll('.dl'));
 
-    function loadDoc(details) {
-      if (details.dataset.loaded) return;
-      details.dataset.loaded = "1";
-      var body = details.querySelector(".doc-body");
-      var src = details.dataset.src;
+  function setDropdown(dropdown,isOpen){
+    var menu=dropdown.querySelector('.menu');
+    var button=dropdown.querySelector('button');
+    menu.classList.toggle('open',isOpen);
+    button.setAttribute('aria-expanded',String(isOpen));
+  }
 
-      fetch(src)
-        .then(function (r) {
-          if (!r.ok) throw new Error(r.status);
-          return r.text();
-        })
-        .then(function (text) {
-          body.innerHTML = render(text);
-        })
-        .catch(function () {
-          delete details.dataset.loaded;
-          body.innerHTML = '<p class="doc-status">This document couldn\'t be loaded here. ' +
-            '<a href="' + src + '" style="color:var(--accent)">Open ' + src + '</a> directly.</p>';
-        });
-    }
+  function closeDropdowns(except){
+    dropdowns.forEach(function(dropdown){
+      if(dropdown!==except)setDropdown(dropdown,false);
+    });
+  }
 
-    document.querySelectorAll("details.doc").forEach(function (d) {
-      d.addEventListener("toggle", function () { if (d.open) loadDoc(d); });
+  dropdowns.forEach(function(dropdown){
+    var button=dropdown.querySelector('button');
+    var menu=dropdown.querySelector('.menu');
+
+    button.addEventListener('click',function(event){
+      event.stopPropagation();
+      var shouldOpen=!menu.classList.contains('open');
+      closeDropdowns(dropdown);
+      setDropdown(dropdown,shouldOpen);
     });
 
-    // Deep links: index.html#privacy or #terms open that section.
-    function openFromHash() {
-      var d = document.querySelector("details.doc" + (location.hash || "#none"));
-      if (d) { d.open = true; d.scrollIntoView(); }
-    }
-    window.addEventListener("hashchange", openFromHash);
-    openFromHash();
-  </script>
+    menu.querySelectorAll('a').forEach(function(link){
+      link.addEventListener('click',function(){setDropdown(dropdown,false)});
+    });
+  });
 
+  document.addEventListener('click',function(event){
+    if(!event.target.closest('.dl'))closeDropdowns();
+  });
+
+  document.addEventListener('keydown',function(event){
+    if(event.key==='Escape'){
+      var openDropdown=dropdowns.find(function(dropdown){
+        return dropdown.querySelector('.menu').classList.contains('open');
+      });
+      closeDropdowns();
+      if(openDropdown)openDropdown.querySelector('button').focus();
+    }
+  });
+
+  // Show the floating button only while the user is moving down the page.
+  // Any upward movement hides it; clicking it also hides it immediately.
+  var backToTop=document.querySelector('.totop');
+  var lastScrollY=window.pageYOffset||0;
+  var scrollTicking=false;
+
+  function updateBackToTop(){
+    var currentY=window.pageYOffset||0;
+    var direction=currentY-lastScrollY;
+
+    if(currentY<=500||direction < -1){
+      backToTop.classList.remove('show');
+    }else if(direction > 1){
+      backToTop.classList.add('show');
+    }
+
+    lastScrollY=currentY;
+    scrollTicking=false;
+  }
+
+  window.addEventListener('scroll',function(){
+    if(!scrollTicking){
+      scrollTicking=true;
+      requestAnimationFrame(updateBackToTop);
+    }
+  },{passive:true});
+
+  backToTop.addEventListener('click',function(){
+    backToTop.classList.remove('show');
+  });
+})();
+</script>
 </body>
 </html>
