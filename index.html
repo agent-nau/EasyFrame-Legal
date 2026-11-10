@@ -49,13 +49,16 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 .badge b{width:7px;height:7px;border-radius:50%;background:#3ddc97;display:block}
 h1{font-size:clamp(2.4rem,6.2vw,4.2rem);font-weight:700;letter-spacing:-.035em;max-width:16ch;margin:24px auto 20px}
 .hero p{color:var(--muted);font-size:1.15rem;max-width:52ch;margin:0 auto 34px}
-.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center}
+
+/* Button Fixes */
 .btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center; /* Centers the text and icon perfectly */
-  height: 48px; /* FIX: Forces all buttons to be exactly the same height */
-  padding: 0 24px; /* Only horizontal padding */
+  justify-content: center;
+  height: 48px;
+  padding: 0 24px;
+  min-width: 220px; /* Makes both buttons exactly the same width */
   border-radius: 12px;
   font-weight: 600;
   font-size: 1rem;
@@ -65,7 +68,12 @@ h1{font-size:clamp(2.4rem,6.2vw,4.2rem);font-weight:700;letter-spacing:-.035em;m
   transition: transform .15s, border-color .15s, box-shadow .15s;
 }
 .btn:hover{text-decoration:none;border-color:#3a4356;transform:translateY(-1px)}
-.btn.primary{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 8px 28px -8px rgba(110,110,255,.55)}
+.btn.primary{
+  background:var(--grad);
+  border: none; /* Fixes the ghost border issue */
+  color:#fff;
+  box-shadow:0 8px 28px -8px rgba(110,110,255,.55)
+}
 .btn.primary:hover{box-shadow:0 12px 32px -8px rgba(110,110,255,.7)}
 .reveal{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
 .reveal.d1{animation-delay:.08s}.reveal.d2{animation-delay:.16s}.reveal.d3{animation-delay:.24s}
@@ -80,8 +88,14 @@ h1{font-size:clamp(2.4rem,6.2vw,4.2rem);font-weight:700;letter-spacing:-.035em;m
 
 /* Dropdown chevron + open/close animation */
 .chev{
-  width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;
-  stroke-linecap:round;stroke-linejoin:round;transform-origin:center;
+  width:18px; /* Increased size */
+  height:18px; /* Increased size */
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.5; /* Made thicker to match bold text */
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  transform-origin:center;
   transition:transform .28s cubic-bezier(.4,0,.2,1);
 }
 .dl > button[aria-expanded="true"] .chev{transform:rotate(180deg)}
@@ -226,9 +240,9 @@ footer .fl{display:flex;gap:20px}
 <section id="demo" style="padding-top:24px">
   <div class="wrap">
     <figure class="video-card">
-      <!-- NOTE: Change demo.mp4 to robloxauth.mp4 if that is the file name in your GitHub repo -->
-      <video controls preload="metadata" playsinline src="demo.mp4">
-        Your browser can’t play this video. <a href="demo.mp4">Download the demo</a>.
+      <!-- FIXED: Changed demo.mp4 to robloxauth.mp4 -->
+      <video controls preload="metadata" playsinline src="robloxauth.mp4">
+        Your browser can’t play this video. <a href="robloxauth.mp4">Download the demo</a>.
       </video>
       <figcaption>See how it works — select a frame, generate a code, paste it into Studio.</figcaption>
     </figure>
