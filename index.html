@@ -39,7 +39,7 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;color:var(--text)}
 .brand:hover{text-decoration:none}
 .logo{width:28px;height:28px;border-radius:8px;object-fit:contain;display:block}
-.links{display:flex;gap:22px;font-size:.95rem}
+.links{display:flex;gap:22px;font-size:.95rem;align-items:center;}
 .links a{color:var(--muted)}
 .links a:hover{color:var(--text);text-decoration:none}
 
@@ -49,32 +49,84 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 .badge b{width:7px;height:7px;border-radius:50%;background:#3ddc97;display:block}
 h1{font-size:clamp(2.4rem,6.2vw,4.2rem);font-weight:700;letter-spacing:-.035em;max-width:16ch;margin:24px auto 20px}
 .hero p{color:var(--muted);font-size:1.15rem;max-width:52ch;margin:0 auto 34px}
-.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center;position:relative;z-index:5}
 
-/* Button Fixes */
+/* Button Base & Sizing */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   height: 48px;
-  padding: 0 24px;
-  min-width: 220px; /* Makes both buttons exactly the same width */
+  width: 260px;
+  max-width: 100%;
   border-radius: 12px;
   font-weight: 600;
   font-size: 1rem;
   border: 1px solid var(--border);
   color: var(--text);
   background: var(--surface);
-  transition: transform .15s, border-color .15s, box-shadow .15s;
+  transition: all .2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .btn:hover{text-decoration:none;border-color:#3a4356;transform:translateY(-1px)}
+
+/* Download Button Gradient */
 .btn.primary{
   background:var(--grad);
-  border: none; /* Fixes the ghost border issue */
+  border: none;
   color:#fff;
   box-shadow:0 8px 28px -8px rgba(110,110,255,.55)
 }
 .btn.primary:hover{box-shadow:0 12px 32px -8px rgba(110,110,255,.7)}
+
+/* Roblox Login Button */
+.btn-roblox {
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  box-shadow: 0 4px 14px rgba(255,255,255,0.1);
+}
+.btn-roblox:hover {
+  background: #f0f0f0;
+  color: #000000;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255,255,255,0.2);
+}
+.btn-roblox .roblox-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  margin-right: 8px;
+}
+
+/* Success State for Login Button */
+.btn-roblox.logged-in {
+  background: var(--surface-2);
+  color: #3ddc97;
+  border: 1px solid rgba(61, 220, 151, 0.3);
+  box-shadow: 0 4px 14px rgba(61, 220, 151, 0.1);
+  pointer-events: none;
+  font-size: 0.9rem; /* Slightly smaller to fit DisplayName (ID) */
+  padding: 0 12px;
+}
+.btn-roblox.logged-in svg {
+  width: 18px;
+  height: 18px;
+  stroke: #3ddc97;
+  fill: none;
+  stroke-width: 2.5;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+.btn-roblox.logged-in span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .reveal{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
 .reveal.d1{animation-delay:.08s}.reveal.d2{animation-delay:.16s}.reveal.d3{animation-delay:.24s}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -83,20 +135,16 @@ h1{font-size:clamp(2.4rem,6.2vw,4.2rem);font-weight:700;letter-spacing:-.035em;m
 .gh{width:18px;height:18px;flex:none}
 .links a.keep{display:inline-flex;align-items:center;gap:7px}
 .links .gh{width:16px;height:16px}
-.cta{position:relative;z-index:5}
-.dl{position:relative}
+
+/* Ensures the dropdown wrapper matches the button width exactly */
+.dl { position: relative; width: 260px; max-width: 100%; display: inline-block; }
 
 /* Dropdown chevron + open/close animation */
 .chev{
-  width:18px; /* Increased size */
-  height:18px; /* Increased size */
-  fill:none;
-  stroke:currentColor;
-  stroke-width:2.5; /* Made thicker to match bold text */
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  transform-origin:center;
+  width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.5;
+  stroke-linecap:round;stroke-linejoin:round;transform-origin:center;
   transition:transform .28s cubic-bezier(.4,0,.2,1);
+  margin-left: 8px;
 }
 .dl > button[aria-expanded="true"] .chev{transform:rotate(180deg)}
 
@@ -122,11 +170,75 @@ h1{font-size:clamp(2.4rem,6.2vw,4.2rem);font-weight:700;letter-spacing:-.035em;m
 .menu .ms{color:var(--muted);font-size:.86rem;line-height:1.4}
 
 /* menu item animation */
-.links{align-items:center}
 .menu.open a{animation:itemIn .22s ease-out both}
 .menu.open a:nth-child(2){animation-delay:.05s}
 .menu.open a:nth-child(3){animation-delay:.1s}
 @keyframes itemIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* =========================================
+   PREMIUM TOAST NOTIFICATION
+   ========================================= */
+#toast-container {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+  width: max-content;
+  max-width: 90vw;
+}
+
+#toast-container.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8);
+  color: var(--text);
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.toast-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.toast.error {
+  border-color: rgba(255, 71, 87, 0.4);
+}
+.toast.error .toast-icon {
+  color: #ff4757;
+}
+
+.toast.success {
+  border-color: rgba(61, 220, 151, 0.4);
+}
+.toast.success .toast-icon {
+  color: #3ddc97;
+}
 
 /* Back-to-top fade */
 .totop{
@@ -191,6 +303,8 @@ footer .fl{display:flex;gap:20px}
   .links a:not(.keep){display:none}
   .links{gap:14px}
   .card,.step{padding:24px}
+  .cta{flex-direction:column;}
+  .btn, .dl { width: 100%; max-width: 320px; }
 }
 @media (prefers-reduced-motion:reduce){
   .reveal{animation:none}
@@ -206,8 +320,7 @@ footer .fl{display:flex;gap:20px}
   <div class="wrap">
     <a class="brand" href="#"><img class="logo" src="public/text.png" alt="" width="28" height="28">EasyFrame</a>
     <div class="links">
-      <a href="#features">Features</a>
-      <a href="#how">How it works</a>
+      <a href="#">Home</a>
       <a href="#privacy">Privacy</a>
       <a href="#terms">Terms</a>
       <a class="keep" href="https://github.com/agent-nau/EasyFrame-Legal"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
@@ -220,27 +333,44 @@ footer .fl{display:flex;gap:20px}
     <span class="badge reveal"><b></b>Windows 10/11 • Free &amp; Open Source</span>
     <h1 class="reveal d1">Send Figma frames directly to Roblox Studio.</h1>
     <p class="reveal d2">Pick a frame, generate a code, paste it into Studio. Your design arrives as native, editable Roblox GUI.</p>
+    
     <div class="cta reveal d3">
+      <!-- Roblox Login Button -->
+      <a class="btn btn-roblox" href="https://www.easyframe.online/api/login" id="hero-login-btn">
+        <svg class="roblox-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Roblox</title><path d="M18.926 23.998 0 18.892 5.075.002 24 5.108ZM15.348 10.09l-5.282-1.453-1.414 5.273 5.282 1.453z"/></svg>
+        Log in with Roblox
+      </a>
+
+      <!-- Download Dropdown -->
       <div class="dl">
-        <button class="btn primary" id="download-menu-button" type="button" aria-haspopup="true" aria-controls="download-menu" aria-expanded="false">Download EasyFrame<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <button class="btn primary" id="download-menu-button" type="button" aria-haspopup="true" aria-controls="download-menu" aria-expanded="false">
+          Download EasyFrame<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
         <div class="menu" id="download-menu">
           <a href="https://github.com/agent-nau/EasyFrame-Legal/releases/latest/download/EasyFrame.exe"><span class="mt">EasyFrame for Windows</span><span class="ms">Desktop app (.exe) – run this first</span></a>
           <a href="https://github.com/agent-nau/EasyFrame-Legal/releases/latest/download/EasyFrame-Figma-Plugin.zip"><span class="mt">Figma plugin</span><span class="ms">Generates the 6-character code</span></a>
           <a href="https://github.com/agent-nau/EasyFrame-Legal/releases/latest/download/EasyFrame-Roblox-Plugin.rbxm"><span class="mt">Roblox Studio plugin</span><span class="ms">Paste the code here to import your design</span></a>
         </div>
       </div>
-      <a class="btn" href="https://github.com/agent-nau/EasyFrame-Legal"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>View on GitHub</a>
     </div>
-    <div class="codebox reveal d3" aria-label="Example 6-character code">
+    
+    <div class="codebox reveal d3" aria-label="Example 6-character code" style="margin-top: 30px;">
       <span>Figma plugin shows</span><span class="code" aria-hidden="true">3SYFM3</span><span>Studio plugin accepts</span>
     </div>
   </div>
 </header>
 
+<!-- Premium Toast Notification -->
+<div id="toast-container">
+  <div class="toast">
+    <div class="toast-icon" id="toast-icon"></div>
+    <span id="toast-message"></span>
+  </div>
+</div>
+
 <section id="demo" style="padding-top:24px">
   <div class="wrap">
     <figure class="video-card">
-      <!-- FIXED: Changed demo.mp4 to robloxauth.mp4 -->
       <video controls preload="metadata" playsinline src="robloxauth.mp4">
         Your browser can’t play this video. <a href="robloxauth.mp4">Download the demo</a>.
       </video>
@@ -262,7 +392,7 @@ footer .fl{display:flex;gap:20px}
       <article class="card">
         <span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
         <h3>Roblox OAuth</h3>
-        <p>Log in with Roblox to upload images directly to your account.</p>
+        <p>Log in with Roblox on our website to securely upload images directly to your account.</p>
       </article>
       <article class="card">
         <span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 21V9"/></svg></span>
@@ -392,16 +522,13 @@ footer .fl{display:flex;gap:20px}
     e.preventDefault();
     
     if(target){
-      // Use native smooth scrolling
       target.scrollIntoView({behavior: 'smooth', block: 'start'});
       target.setAttribute('tabindex','-1');
       target.focus({preventScroll:true});
     } else {
-      // Scroll to top if href="#"
       window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    // Remove hashtag from URL
     try{
       history.replaceState(null, '', location.pathname + location.search);
     }catch(_){}
@@ -410,6 +537,66 @@ footer .fl{display:flex;gap:20px}
 </script>
 <script>
 (function(){
+  // ----------------------------------------------------
+  // LUCIDE ICONS SVG TEMPLATES
+  // ----------------------------------------------------
+  const icons = {
+    error: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`,
+    success: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`,
+    user: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
+  };
+
+  // ----------------------------------------------------
+  // PREMIUM TOAST SYSTEM
+  // ----------------------------------------------------
+  let isLoggedIn = false; 
+  const toastContainer = document.getElementById('toast-container');
+  const toastIcon = document.getElementById('toast-icon');
+  const toastMessage = document.getElementById('toast-message');
+  let toastTimeout;
+
+  function showToast(message, type = 'error') {
+    toastContainer.className = ''; 
+    void toastContainer.offsetWidth; 
+    
+    toastIcon.innerHTML = icons[type];
+    toastMessage.textContent = message;
+    
+    toastContainer.classList.add('show');
+    toastContainer.querySelector('.toast').className = `toast ${type}`;
+
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+      toastContainer.classList.remove('show');
+    }, 4000);
+  }
+
+  // Handle Login button (Simulation)
+  const loginBtn = document.getElementById('hero-login-btn');
+  if (loginBtn) {
+    loginBtn.addEventListener('click', function(e) {
+      // 🚨 IMPORTANT: When you hook up your real backend API, REMOVE the line below!
+      e.preventDefault(); 
+      
+      isLoggedIn = true;
+      
+      // --- MOCK DATA FROM ROBLOX API ---
+      const mockDisplayName = "Builderman";
+      const mockId = "156";
+      // ---------------------------------
+
+      // 1. Show Success Toast
+      showToast("Successfully logged in! You can now download EasyFrame.", "success");
+      
+      // 2. Change button UI to logged-in state with DisplayName and ID
+      this.innerHTML = `${icons.user} <span>Logged in as ${mockDisplayName} (${mockId})</span>`;
+      this.classList.add('logged-in');
+    });
+  }
+
+  // ----------------------------------------------------
+  // DROPDOWN LOGIC WITH SECURITY CHECK
+  // ----------------------------------------------------
   var dropdowns=[].slice.call(document.querySelectorAll('.dl'));
 
   function setDropdown(dropdown,isOpen){
@@ -431,6 +618,14 @@ footer .fl{display:flex;gap:20px}
 
     button.addEventListener('click',function(event){
       event.stopPropagation();
+      
+      // SECURITY CHECK: If they click download but aren't logged in
+      if (button.id === 'download-menu-button' && !isLoggedIn) {
+        closeDropdowns();
+        showToast("Please log in with Roblox first before downloading the EasyFrame.exe", "error");
+        return; 
+      }
+
       var shouldOpen=!menu.classList.contains('open');
       closeDropdowns(dropdown);
       setDropdown(dropdown,shouldOpen);
@@ -455,8 +650,9 @@ footer .fl{display:flex;gap:20px}
     }
   });
 
-  // Show the floating button only while the user is moving down the page.
-  // Any upward movement hides it; clicking it also hides it immediately.
+  // ----------------------------------------------------
+  // BACK TO TOP LOGIC
+  // ----------------------------------------------------
   var backToTop=document.querySelector('.totop');
   var lastScrollY=window.pageYOffset||0;
   var scrollTicking=false;
