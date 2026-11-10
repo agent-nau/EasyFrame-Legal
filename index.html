@@ -50,7 +50,20 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 h1{font-size:clamp(2.4rem,6.2vw,4.2rem);font-weight:700;letter-spacing:-.035em;max-width:16ch;margin:24px auto 20px}
 .hero p{color:var(--muted);font-size:1.15rem;max-width:52ch;margin:0 auto 34px}
 .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:12px;font-weight:600;font-size:1rem;border:1px solid var(--border);color:var(--text);background:var(--surface);transition:transform .15s,border-color .15s,box-shadow .15s}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center; /* Centers the text and icon perfectly */
+  height: 48px; /* FIX: Forces all buttons to be exactly the same height */
+  padding: 0 24px; /* Only horizontal padding */
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  color: var(--text);
+  background: var(--surface);
+  transition: transform .15s, border-color .15s, box-shadow .15s;
+}
 .btn:hover{text-decoration:none;border-color:#3a4356;transform:translateY(-1px)}
 .btn.primary{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 8px 28px -8px rgba(110,110,255,.55)}
 .btn.primary:hover{box-shadow:0 12px 32px -8px rgba(110,110,255,.7)}
